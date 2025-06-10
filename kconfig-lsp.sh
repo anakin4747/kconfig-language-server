@@ -1,5 +1,14 @@
-
 #!/usr/bin/env bash
+
+ROOTPATH=""
+
+get_id() {
+    local id="$(echo "$1" | jq -r .id)"
+    if [[ "$id" == "null" ]]; then
+        id=""
+    fi
+    echo "$id"
+}
 
 send_response() {
     local response="$1"
@@ -8,7 +17,8 @@ send_response() {
 }
 
 handle_initialize() {
-    local id="$1"
+    local id="$(get_id $1)"
+    ROOTPATH="$(echo "$1" | jq -r .rootPath)"
     send_response "$(cat <<EOF
 {
   "jsonrpc": "2.0",
@@ -24,7 +34,23 @@ EOF
 }
 
 handle_hover() {
-    local id="$1"
+    local id="$(get_id $1)"
+    log "id: $id"
+    local line="$(echo "$1" | jq -r .params.position.line)"
+    log "line: $line"
+    local character="$(echo "$1" | jq -r .params.position.character)"
+    log "character: $character"
+    local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
+    log "file: $file"
+    local cword="$(nvim --headless -u NONE +"call cursor($(($line + 1)), $character)" +"echo expand('<cword>')" +qa "$file" 2>&1)"
+    # local cword="$(vim \
+    #                 --clean \
+    #                 -u NONE \
+    #                 --cmd "call cursor($(($line+1)), $character)" \
+    #                 --cmd "echo expand('<cword>')" \
+    #                 --cmd "quit")"
+    log "cword: $cword"
+
     send_response "$(cat <<EOF
 {
   "jsonrpc": "2.0",
@@ -32,7 +58,7 @@ handle_hover() {
   "result": {
     "contents": {
       "kind": "markdown",
-      "value": "**Hello from Bash LSP!**"
+      "value": "$cword"
     }
   }
 }
@@ -55,14 +81,6 @@ log() {
     echo "$*" >> /home/kin/src/kconfig-lsp/log
 }
 
-get_id() {
-    local id="$(echo "$1" | jq -r .id)"
-    if [[ "$id" == "null" ]]; then
-        id=""
-    fi
-    echo "$id"
-}
-
 main() {
     while true; do
         local content_length="$(parse_headers)"
@@ -78,18 +96,18 @@ main() {
         local method="$(echo "$body" | jq -r .method)"
 
         case "$method" in
-          "initialize")
-              handle_initialize "$id"
-              ;;
-          "textDocument/hover")
-              handle_hover "$id"
-              ;;
-          "shutdown")
-              send_response "{\"jsonrpc\":\"2.0\",\"id\":$id,\"result\":null}"
-              ;;
-          "exit")
-              exit 0
-              ;;
+            "initialize")
+                handle_initialize "$body"
+                ;;
+            "textDocument/hover")
+                handle_hover "$body"
+                ;;
+            "shutdown")
+                send_response "{\"jsonrpc\":\"2.0\",\"id\":$id,\"result\":null}"
+                ;;
+            "exit")
+                exit 0
+                ;;
         esac
     done
 }
