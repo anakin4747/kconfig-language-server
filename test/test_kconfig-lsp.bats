@@ -9,3 +9,4 @@ setup() {
     test "$status" -eq 0
     test "$output" = "123"
 }
+

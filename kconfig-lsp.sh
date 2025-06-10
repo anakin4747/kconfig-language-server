@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 ROOTPATH=""
 
 get_id() {
@@ -13,12 +15,12 @@ get_id() {
 send_response() {
     local response="$1"
     local length=${#response}
-    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response"
+    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response" | tee -a /home/kin/src/kconfig-lsp/log
 }
 
 handle_initialize() {
     local id="$(get_id $1)"
-    ROOTPATH="$(echo "$1" | jq -r .rootPath)"
+    ROOTPATH="$(echo "$1" | jq -r .params.rootPath)"
     send_response "$(cat <<EOF
 {
   "jsonrpc": "2.0",
@@ -33,15 +35,25 @@ EOF
 )"
 }
 
+get_cword_docs() {
+    local spec="$ROOTPATH/Documentation/kbuild/kconfig-language.rst"
+
+    log "spec: $spec"
+    case "$1" in
+        config)
+            awk '/^Menu entries$/ {flag=1} /^Menu attributes$/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        *)
+            ;;
+    esac
+}
+
 handle_hover() {
     local id="$(get_id $1)"
-    log "id: $id"
     local line="$(echo "$1" | jq -r .params.position.line)"
-    log "line: $line"
     local character="$(echo "$1" | jq -r .params.position.character)"
-    log "character: $character"
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
-    log "file: $file"
     local cword="$(nvim --headless -u NONE +"call cursor($(($line + 1)), $character)" +"echo expand('<cword>')" +qa "$file" 2>&1)"
     # local cword="$(vim \
     #                 --clean \
@@ -49,7 +61,9 @@ handle_hover() {
     #                 --cmd "call cursor($(($line+1)), $character)" \
     #                 --cmd "echo expand('<cword>')" \
     #                 --cmd "quit")"
-    log "cword: $cword"
+
+    local docs="$(get_cword_docs "$cword")"
+
 
     send_response "$(cat <<EOF
 {
@@ -58,7 +72,7 @@ handle_hover() {
   "result": {
     "contents": {
       "kind": "markdown",
-      "value": "$cword"
+      "value": "$docs"
     }
   }
 }
