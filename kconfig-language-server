@@ -19,7 +19,7 @@ send_response() {
 }
 
 handle_initialize() {
-    local id="$(get_id $1)"
+    local id="$(get_id "$1")"
     ROOTPATH="$(echo "$1" | jq -r .params.rootPath)"
     send_response "$(cat <<EOF
 {
@@ -56,7 +56,9 @@ get_cword() {
     local line="$1"
     local character="$2"
     local file="$3"
-    awk -v offset="$character" "NR==$line {if (offset >= 1 && offset <= length(\$1)) print \$1}" "$file"
+    awk -v offset="$character" \
+        "NR==$line {if (offset >= 1 && offset <= length(\$1)) print \$1}" \
+        "$file"
 }
 
 handle_hover() {
