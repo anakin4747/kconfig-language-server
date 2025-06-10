@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOTPATH=""
+SPEC=""
 
 get_id() {
     local id="$(echo "$1" | jq -r .id)"
@@ -39,7 +40,7 @@ get_docs() {
     local spec="$ROOTPATH/Documentation/kbuild/kconfig-language.rst"
 
     if [ ! -f "$spec" ]; then
-        spec="/home/kin/src/kconfig-language-server/kconfig.spec"
+        spec="$SPEC"
     fi
 
     case "$1" in
@@ -141,11 +142,17 @@ parse_headers() {
     echo "$content_length"
 }
 
-log() {
-    echo "$*" >> /home/kin/src/kconfig-language-server/log
-}
-
 main() {
+
+    SPEC=$(find /usr -name kconfig.spec 2> /dev/null)
+
+    if [ ! -f "$SPEC" ]; then
+        echo "failed to find kconfig.spec"
+        echo "cannot provide documentation"
+        echo "try to reinstall kconfig-language-server"
+        exit 1
+    fi
+
     while true; do
         local content_length="$(parse_headers)"
 
