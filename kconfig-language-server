@@ -47,7 +47,7 @@ get_docs() {
             awk '/^Menu entries$/ {flag=1} /^Menu attributes$/ {flag=0} flag' "$spec" \
                 | sed 's/"/\\"/g'
             ;;
-        ^bool|^tristate|string|hex|int|prompt)
+        bool|tristate|string|hex|int|prompt)
             awk '/^Menu attributes$/ {flag=1} /^- default value/ {flag=0} flag' "$spec" \
                 | sed 's/"/\\"/g'
             ;;
@@ -80,7 +80,7 @@ get_docs() {
                 | sed 's/"/\\"/g'
             ;;
         help|---help---)
-            awk '/^- help text/ {flag=1} /^- numerical ranges/ {flag=0} flag' "$spec" \
+            awk '/^- help text/ {flag=1} /^- misc options/ {flag=0} flag' "$spec" \
                 | sed 's/"/\\"/g'
             ;;
         option|defconfig_list|modules|allnoconfig_y)
