@@ -292,6 +292,7 @@ Menu structure
 The position of a menu entry in the tree is determined in two ways. First
 it can be specified explicitly::
 
+```kconfig
   menu "Network device support"
 	depends on NET
 
@@ -299,6 +300,7 @@ it can be specified explicitly::
 	...
 
   endmenu
+```
 
 All entries within the "menu" ... "endmenu" block become a submenu of
 "Network device support". All subentries inherit the dependencies from
@@ -314,6 +316,7 @@ must be true:
 - the child entry must become invisible, if the parent is set to 'n'
 - the child entry must only be visible, if the parent is visible::
 
+```kconfig
     config MODULES
 	bool "Enable loadable module support"
 
@@ -323,6 +326,7 @@ must be true:
 
     comment "module support disabled"
 	depends on !MODULES
+```
 
 MODVERSIONS directly depends on MODULES, this means it's only visible if
 MODULES is different from 'n'. The comment on the other hand is only
