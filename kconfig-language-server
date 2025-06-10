@@ -53,7 +53,7 @@ get_cword() {
     local line="$1"
     local character="$2"
     local file="$3"
-    echo "config"
+    awk -v offset="$character" "NR==$line {if (offset >= 1 && offset <= length(\$1)) print \$1}" "$file"
 }
 
 handle_hover() {
@@ -61,7 +61,7 @@ handle_hover() {
     local line="$(echo "$1" | jq -r .params.position.line)"
     local character="$(echo "$1" | jq -r .params.position.character)"
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
-    local cword="$(nvim --headless -u NONE +"call cursor($((line + 1)), $character)" +"echo expand('<cword>')" +qa "$file" 2>&1)"
+    local cword="$(get_cword "$line" "$character" "$file")"
     local docs="$(get_cword_docs "$cword")"
 
     send_response "$(cat <<EOF
