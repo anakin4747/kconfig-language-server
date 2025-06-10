@@ -47,6 +47,50 @@ get_docs() {
             awk '/^Menu entries$/ {flag=1} /^Menu attributes$/ {flag=0} flag' "$spec" \
                 | sed 's/"/\\"/g'
             ;;
+        ^bool|^tristate|string|hex|int|prompt)
+            awk '/^Menu attributes$/ {flag=1} /^- default value/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        default)
+            awk '/^- default value/ {flag=1} /^- type definition/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        def_bool|def_tristate)
+            awk '/^- type definition \+ default/ {flag=1} /^- dependencies/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        depends)
+            awk '/^- dependencies/ {flag=1} /^- reverse dependencies/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        select)
+            awk '/^- reverse dependencies/ {flag=1} /^- weak reverse dependencies/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        imply)
+            awk '/^- weak reverse dependencies/ {flag=1} /^- limiting menu display/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        visible)
+            awk '/^- limiting menu display/ {flag=1} /^- numerical ranges/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        range)
+            awk '/^- numerical ranges/ {flag=1} /^- help text/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        help|---help---)
+            awk '/^- help text/ {flag=1} /^- numerical ranges/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        option|defconfig_list|modules|allnoconfig_y)
+            awk '/^- misc options/ {flag=1} /^Menu dependencies/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        menu|endmenu)
+            awk '/^Menu structure/ {flag=1} /^Kconfig syntax/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
         *)
             ;;
     esac
