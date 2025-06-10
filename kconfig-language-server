@@ -92,6 +92,26 @@ get_docs() {
             awk '/^Menu structure/ {flag=1} /^Kconfig syntax/ {flag=0} flag' "$spec" \
                 | sed 's/"/\\"/g'
             ;;
+        mainmenu)
+            awk '/^mainmenu::/ {flag=1} /Kconfig source file comment/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        comment)
+            awk '/^comment::/ {flag=1} /^menu::/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        '#')
+            awk '/Kconfig source file comment/ {flag=1} /^Kconfig hints/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        source)
+            awk '/^source::/ {flag=1} /^mainmenu::/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
+        choice|endchoice)
+            awk '/^choices::/ {flag=1} /^comment::/ {flag=0} flag' "$spec" \
+                | sed 's/"/\\"/g'
+            ;;
         *)
             ;;
     esac
