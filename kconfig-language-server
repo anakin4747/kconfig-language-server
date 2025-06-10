@@ -53,7 +53,7 @@ get_cword() {
     local line="$1"
     local character="$2"
     local file="$3"
-    echo
+    echo "config"
 }
 
 handle_hover() {

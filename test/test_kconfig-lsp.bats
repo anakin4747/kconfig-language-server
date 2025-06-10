@@ -10,3 +10,9 @@ setup() {
     test "$output" = "123"
 }
 
+@test "get_cword gets config keyword" {
+    run get_cword 2 4 test/fixtures/Kconfig
+    test "$status" -eq 0
+    test "$output" = "config"
+}
+
