@@ -41,41 +41,44 @@ EOF
 }
 
 parse_headers() {
-    echo 123
+    local content_length=0
+    while IFS= read -r line; do
+        [[ "$line" == $'\r' || -z "$line" ]] && break
+        if [[ "$line" =~ Content-Length:\ ([0-9]+) ]]; then
+            content_length=${BASH_REMATCH[1]}
+        fi
+    done
+    echo "$content_length"
 }
 
 main() {
     while true; do
-        # Read headers
-        content_length=0
-        while IFS= read -r line; do
-            [[ "$line" == $'\r' || -z "$line" ]] && break
-            if [[ "$line" =~ Content-Length:\ ([0-9]+) ]]; then
-                content_length=${BASH_REMATCH[1]}
-            fi
-        done
+        local content_length="$(parse_headers)"
 
-        # Read body
-        if (( content_length > 0 )); then
-            read -r -n "$content_length" body
-            id=$(echo "$body" | grep -o '"id":[^,}]*' | head -1 | cut -d: -f2 | tr -d ' ')
-            method=$(echo "$body" | grep -o '"method":"[^"]*"' | cut -d: -f2 | tr -d '"')
-
-            case "$method" in
-              "initialize")
-                  handle_initialize "$id"
-                  ;;
-              "textDocument/hover")
-                  handle_hover "$id"
-                  ;;
-              "shutdown")
-                  send_response "{\"jsonrpc\":\"2.0\",\"id\":$id,\"result\":null}"
-                  ;;
-              "exit")
-                  exit 0
-                  ;;
-            esac
+        if (( content_length < 0 )); then
+            continue
         fi
+
+        read -r -n "$content_length" body
+
+        id=$(echo "$body" | grep -o '"id":[^,}]*' | head -1 | cut -d: -f2 | tr -d ' ')
+        method=$(echo "$body" | grep -o '"method":"[^"]*"' | cut -d: -f2 | tr -d '"')
+        echo "$body" > /home/kin/src/kconfig-lsp/test/file.$(date +%s)
+
+        case "$method" in
+          "initialize")
+              handle_initialize "$id"
+              ;;
+          "textDocument/hover")
+              handle_hover "$id"
+              ;;
+          "shutdown")
+              send_response "{\"jsonrpc\":\"2.0\",\"id\":$id,\"result\":null}"
+              ;;
+          "exit")
+              exit 0
+              ;;
+        esac
     done
 }
 
