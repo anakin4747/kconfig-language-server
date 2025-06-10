@@ -1,8 +1,7 @@
 
-Kconfig LSP
+# Kconfig LSP
 
-firstly documentation hover
+Currently only supports highlighting.
 
-for every Kconfig keyword in a kconfig codebase provide hover documentation
-
-{ id = 3, jsonrpc = "2.0", method = "textDocument/hover", params = { position = { character = 1, line = 9 }, textDocument = { uri = "file:///home/kin/src/linux/Kconfig" } } }
+Will use kconfig documentation if available in current `rootPath` else will
+resort to documentation in kconfig.spec.
