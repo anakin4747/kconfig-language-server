@@ -35,10 +35,13 @@ EOF
 )"
 }
 
-get_cword_docs() {
+get_docs() {
     local spec="$ROOTPATH/Documentation/kbuild/kconfig-language.rst"
 
-    log "spec: $spec"
+    if [ ! -f "$spec" ]; then
+        spec="/home/kin/src/kconfig-language-server/kconfig.spec"
+    fi
+
     case "$1" in
         config)
             awk '/^Menu entries$/ {flag=1} /^Menu attributes$/ {flag=0} flag' "$spec" \
@@ -59,10 +62,12 @@ get_cword() {
 handle_hover() {
     local id="$(get_id $1)"
     local line="$(echo "$1" | jq -r .params.position.line)"
+    line=$((line + 1))
     local character="$(echo "$1" | jq -r .params.position.character)"
+    character=$((character + 1))
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
     local cword="$(get_cword "$line" "$character" "$file")"
-    local docs="$(get_cword_docs "$cword")"
+    local docs="$(get_docs "$cword")"
 
     send_response "$(cat <<EOF
 {
