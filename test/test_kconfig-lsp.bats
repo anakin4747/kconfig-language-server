@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-    source kconfig-lsp.sh
+    source kconfig-language-server
 }
 
 @test "parse_headers returns expected output" {

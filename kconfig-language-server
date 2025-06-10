@@ -49,21 +49,20 @@ get_cword_docs() {
     esac
 }
 
+get_cword() {
+    local line="$1"
+    local character="$2"
+    local file="$3"
+    echo
+}
+
 handle_hover() {
     local id="$(get_id $1)"
     local line="$(echo "$1" | jq -r .params.position.line)"
     local character="$(echo "$1" | jq -r .params.position.character)"
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
-    local cword="$(nvim --headless -u NONE +"call cursor($(($line + 1)), $character)" +"echo expand('<cword>')" +qa "$file" 2>&1)"
-    # local cword="$(vim \
-    #                 --clean \
-    #                 -u NONE \
-    #                 --cmd "call cursor($(($line+1)), $character)" \
-    #                 --cmd "echo expand('<cword>')" \
-    #                 --cmd "quit")"
-
+    local cword="$(nvim --headless -u NONE +"call cursor($((line + 1)), $character)" +"echo expand('<cword>')" +qa "$file" 2>&1)"
     local docs="$(get_cword_docs "$cword")"
-
 
     send_response "$(cat <<EOF
 {
