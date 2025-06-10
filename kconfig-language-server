@@ -16,7 +16,7 @@ get_id() {
 send_response() {
     local response="$1"
     local length=${#response}
-    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response" | tee -a /home/kin/src/kconfig-language-server/log
+    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response"
 }
 
 handle_initialize() {
@@ -161,7 +161,6 @@ main() {
         fi
 
         read -r -n "$content_length" body
-        echo "$body" >> /home/kin/src/kconfig-language-server/test/bodies
 
         local id="$(get_id "$body")"
         local method="$(echo "$body" | jq -r .method)"
