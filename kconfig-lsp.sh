@@ -68,7 +68,7 @@ main() {
 
         id=$(echo "$body" | grep -o '"id":[^,}]*' | head -1 | cut -d: -f2 | tr -d ' ')
         method=$(echo "$body" | grep -o '"method":"[^"]*"' | cut -d: -f2 | tr -d '"')
-        echo "$body" > /home/kin/src/kconfig-lsp/test/file.$(date +%s)
+        echo "$body" >> /home/kin/src/kconfig-lsp/test/bodies
 
         case "$method" in
           "initialize")
