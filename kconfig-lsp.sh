@@ -1,13 +1,13 @@
 
 #!/usr/bin/env bash
 
-function send_response() {
+send_response() {
     local response="$1"
     local length=${#response}
     printf "Content-Length: %d\r\n\r\n%s" "$length" "$response"
 }
 
-function handle_initialize() {
+handle_initialize() {
     local id="$1"
     send_response "$(cat <<EOF
 {
@@ -23,7 +23,7 @@ EOF
 )"
 }
 
-function handle_hover() {
+handle_hover() {
     local id="$1"
     send_response "$(cat <<EOF
 {
