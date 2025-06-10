@@ -51,6 +51,11 @@ parse_headers() {
     echo "$content_length"
 }
 
+# expects body from stdin and content_length from args
+get_method() {
+    echo "initialize"
+}
+
 main() {
     while true; do
         local content_length="$(parse_headers)"

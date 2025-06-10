@@ -9,3 +9,9 @@ setup() {
     test "$status" -eq 0
     test "$output" = "123"
 }
+
+@test "get_method returns initialize" {
+    run get_method < test/fixtures/method/initialize
+    test "$status" -eq 0
+    test "$output" = "initialize"
+}
