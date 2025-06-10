@@ -127,14 +127,18 @@ applicable everywhere (see syntax).
   are applied to all other options within this menu entry (which also
   accept an "if" expression), so these two examples are equivalent::
 
+```kconfig
 	bool "foo" if BAR
 	default y if BAR
+```
 
   and::
 
+```kconfig
 	depends on BAR
 	bool "foo"
 	default y
+```
 
 - reverse dependencies: "select" <symbol> ["if" <expr>]
 
@@ -164,6 +168,7 @@ applicable everywhere (see syntax).
 
   Given the following example::
 
+```kconfig
     config FOO
 	tristate
 	imply BAZ
@@ -171,6 +176,7 @@ applicable everywhere (see syntax).
     config BAZ
 	tristate
 	depends on BAR
+```
 
   The following values are possible:
 
