@@ -84,6 +84,12 @@ setup() {
     test "$output" = "endmenu"
 }
 
+@test "get_cword gets keywords prefixed with spaces" {
+    run get_cword 150 11 test/fixtures/Kconfig
+    test "$status" -eq 0
+    test "$output" = "string"
+}
+
 @test "get_docs returns expected output" {
     export ROOTPATH=
     run get_docs "config"
