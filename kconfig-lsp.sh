@@ -51,9 +51,16 @@ parse_headers() {
     echo "$content_length"
 }
 
-# expects body from stdin and content_length from args
-get_method() {
-    echo "initialize"
+log() {
+    echo "$*" >> /home/kin/src/kconfig-lsp/log
+}
+
+get_id() {
+    local id="$(echo "$1" | jq -r .id)"
+    if [[ "$id" == "null" ]]; then
+        id=""
+    fi
+    echo "$id"
 }
 
 main() {
@@ -65,10 +72,10 @@ main() {
         fi
 
         read -r -n "$content_length" body
-
-        id=$(echo "$body" | grep -o '"id":[^,}]*' | head -1 | cut -d: -f2 | tr -d ' ')
-        method=$(echo "$body" | grep -o '"method":"[^"]*"' | cut -d: -f2 | tr -d '"')
         echo "$body" >> /home/kin/src/kconfig-lsp/test/bodies
+
+        local id="$(get_id "$body")"
+        local method="$(echo "$body" | jq -r .method)"
 
         case "$method" in
           "initialize")
