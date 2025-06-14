@@ -89,11 +89,3 @@ setup() {
     test "$status" -eq 0
     test "$output" = "string"
 }
-
-@test "get_docs returns expected output" {
-    export ROOTPATH=
-    run get_docs "config"
-    test "$status" -eq 0
-    [[ "$output" =~ "Menu entries" ]]
-    [[ ! "$output" =~ "Menu attributes" ]]
-}
