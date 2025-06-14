@@ -19,7 +19,6 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/share/kconfig-language-server/runtime
 	install -m 0644 kconfig.spec $(DESTDIR)$(PREFIX)/share/kconfig-language-server/runtime/
 
-
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/kconfig-language-server
