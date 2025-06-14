@@ -118,12 +118,27 @@ get_docs() {
 }
 
 get_cword() {
-    local line="$1"
+    local line_nr="$1"
     local character="$2"
     local file="$3"
-    awk -v offset="$character" \
-        "NR==$line {if (offset >= 1 && offset - 1 <= length(\$1)) print \$1}" \
-        "$file"
+    local line=$(sed -n "${line_nr}p" "$file")
+
+    [ -z "$line" ] && return
+
+    # start at the character walk back to the start or until whitespace
+    # what happens when you don't see whitespace? assume cword starts at
+    # character 1
+    for (( start=character-1; start>=1; start-- )); do
+        [[ "${line:$start:1}" =~ [[:space:]] ]] && break
+    done
+
+    # now $start has the start of cword or just the start of a line
+    # walk to the end of the line until you end or hit whitespace
+    for (( end=start+1; end < ${#line}; end++ )); do
+        [[ "${line:$end:1}" =~ [[:space:]] ]] && break
+    done
+
+    echo ${line:start:end-start}
 }
 
 handle_hover() {
