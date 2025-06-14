@@ -36,6 +36,10 @@ EOF
 )"
 }
 
+get_lines() {
+    awk "/$1/ {flag=1} /$2/ {flag=0} flag" "$3"
+}
+
 get_docs() {
     local spec="$ROOTPATH/Documentation/kbuild/kconfig-language.rst"
 
@@ -45,72 +49,55 @@ get_docs() {
 
     case "$1" in
         config)
-            awk '/^Menu entries$/ {flag=1} /^Menu attributes$/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^Menu entries$" "^Menu attributes$" "$spec"
             ;;
         bool|tristate|string|hex|int|prompt)
-            awk '/^Menu attributes$/ {flag=1} /^- default value/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^Menu attributes$" "^- default value" "$spec"
             ;;
         default)
-            awk '/^- default value/ {flag=1} /^- type definition/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- default value" "^- type definition" "$spec"
             ;;
         def_bool|def_tristate)
-            awk '/^- type definition \+ default/ {flag=1} /^- dependencies/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- type definition \+ default" "^- dependencies" "$spec"
             ;;
         depends)
-            awk '/^- dependencies/ {flag=1} /^- reverse dependencies/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- dependencies" "^- reverse dependencies" "$spec"
             ;;
         select)
-            awk '/^- reverse dependencies/ {flag=1} /^- weak reverse dependencies/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- reverse dependencies" "^- weak reverse dependencies" "$spec"
             ;;
         imply)
-            awk '/^- weak reverse dependencies/ {flag=1} /^- limiting menu display/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- weak reverse dependencies" "^- limiting menu display" "$spec"
             ;;
         visible)
-            awk '/^- limiting menu display/ {flag=1} /^- numerical ranges/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- limiting menu display" "^- numerical ranges" "$spec"
             ;;
         range)
-            awk '/^- numerical ranges/ {flag=1} /^- help text/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- numerical ranges" "^- help text" "$spec"
             ;;
         help|---help---)
-            awk '/^- help text/ {flag=1} /^- misc options/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- help text" "^- misc options" "$spec"
             ;;
         option|defconfig_list|modules|allnoconfig_y)
-            awk '/^- misc options/ {flag=1} /^Menu dependencies/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^- misc options" "^Menu dependencies" "$spec"
             ;;
         menu|endmenu)
-            awk '/^Menu structure/ {flag=1} /^Kconfig syntax/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^Menu structure" "^Kconfig syntax" "$spec"
             ;;
         mainmenu)
-            awk '/^mainmenu::/ {flag=1} /Kconfig source file comment/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^mainmenu::" "Kconfig source file comment" "$spec"
             ;;
         comment)
-            awk '/^comment::/ {flag=1} /^menu::/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^comment::" "^menu::" "$spec"
             ;;
-        '#')
-            awk '/Kconfig source file comment/ {flag=1} /^Kconfig hints/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+        "#")
+            get_lines "Kconfig source file comment" "^Kconfig hints" "$spec"
             ;;
         source)
-            awk '/^source::/ {flag=1} /^mainmenu::/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^source::" "^mainmenu::" "$spec"
             ;;
         choice|endchoice)
-            awk '/^choices::/ {flag=1} /^comment::/ {flag=0} flag' "$spec" \
-                | sed 's/"/\\"/g'
+            get_lines "^choices::" "^comment::" "$spec"
             ;;
         *)
             ;;
