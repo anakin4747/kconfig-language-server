@@ -134,7 +134,7 @@ handle_hover() {
     local character="$(echo "$1" | jq -r .params.position.character)"
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
     local cword="$(get_cword "$((line + 1))" "$((character + 1))" "$file")"
-    local docs="$(get_docs "$cword" | sed 's/"/\\"/g')"
+    local docs="$(get_docs "$cword" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')"
 
     send_response "$(cat <<EOF
 {
