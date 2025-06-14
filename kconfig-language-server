@@ -131,12 +131,10 @@ get_cword() {
 handle_hover() {
     local id="$(get_id $1)"
     local line="$(echo "$1" | jq -r .params.position.line)"
-    line=$((line + 1))
     local character="$(echo "$1" | jq -r .params.position.character)"
-    character=$((character + 1))
     local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
-    local cword="$(get_cword "$line" "$character" "$file")"
-    local docs="$(get_docs "$cword")"
+    local cword="$(get_cword "$((line + 1))" "$((character + 1))" "$file")"
+    local docs="$(get_docs "$cword" | sed 's/"/\\"/g')"
 
     send_response "$(cat <<EOF
 {
