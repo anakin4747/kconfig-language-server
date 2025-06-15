@@ -89,3 +89,16 @@ setup() {
     test "$status" -eq 0
     test "$output" = "string"
 }
+
+@test "get_docs works for Kconfig symbols" {
+
+    expected="This selects MultiMediaCard, Secure Digital and Secure
+Digital I/O support.
+
+If you want MMC/SD/SDIO support, you should say Y here and
+also to your specific host controller driver."
+
+    run get_docs MMC test/fixtures/codebases/linux
+    test "$status" -eq 0
+    test "$output" = "$expected"
+}

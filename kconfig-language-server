@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -u
-
 ROOTPATH=""
 SPEC=""
 
@@ -40,7 +38,25 @@ get_lines() {
     awk "/$1/ {flag=1} /$2/ {flag=0} flag" "$3"
 }
 
+get_symbol_help() {
+    # there can be multiple definitions of a symbol but only one help menu
+    # right?
+
+    local file="$(rg -l "config $1$" "$2")"
+
+    [ -f "$file" ] || return 1
+
+    local config="$(awk "/config $1/ {flag=1} /^[a-z]/ && !/config $1/ {flag=0} flag" "$file")"
+
+    [[ "$config" =~ help ]] || return 1
+    awk "/help/ {flag=1; next} flag" <<< "$config" | sed 's/^[ \t]*//'
+}
+
 get_docs() {
+    if [ -d "$2" ]; then
+        ROOTPATH="$2"
+    fi
+
     local spec="$ROOTPATH/Documentation/kbuild/kconfig-language.rst"
 
     if [ ! -f "$spec" ]; then
@@ -98,6 +114,9 @@ get_docs() {
             ;;
         choice|endchoice)
             get_lines "^choices::" "^comment::" "$spec"
+            ;;
+        [A-Z_][A-Z0-9_]*)
+            get_symbol_help "$1" "$ROOTPATH"
             ;;
         *)
             ;;
