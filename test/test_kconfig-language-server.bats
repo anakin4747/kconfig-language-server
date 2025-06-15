@@ -102,3 +102,9 @@ also to your specific host controller driver."
     test "$status" -eq 0
     test "$output" = "$expected"
 }
+
+@test "get_cword doesn't include ! in cword" {
+    run get_cword 17 31 test/fixtures/codebases/linux/mm/Kconfig
+    test "$status" -eq 0
+    test "$output" = "ARCH_NO_SWAP"
+}

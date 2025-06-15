@@ -144,13 +144,31 @@ get_cword() {
     # what happens when you don't see whitespace? assume cword starts at
     # character 1
     for (( start=character-1; start>=1; start-- )); do
-        [[ "${line:$start:1}" =~ [[:space:]] ]] && break
+        case "${line:$start:1}" in
+            [a-zA-Z0-9_-])
+                continue
+                ;;
+            *)
+                break
+                ;;
+        esac
     done
+
+    if [ "$start" -gt 1 ]; then
+        start=$((start + 1))
+    fi
 
     # now $start has the start of cword or just the start of a line
     # walk to the end of the line until you end or hit whitespace
-    for (( end=start+1; end < ${#line}; end++ )); do
-        [[ "${line:$end:1}" =~ [[:space:]] ]] && break
+    for (( end=character; end < ${#line}; end++ )); do
+        case "${line:$end:1}" in
+            [a-zA-Z0-9_-])
+                continue
+                ;;
+            *)
+                break
+                ;;
+        esac
     done
 
     echo ${line:start:end-start}
