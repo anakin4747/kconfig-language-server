@@ -210,10 +210,10 @@ parse_headers() {
 
 main() {
 
-    SPEC=$(find /usr -name kconfig.spec 2> /dev/null)
+    SPEC=$(find /usr -name kconfig-language.rst 2> /dev/null)
 
     if [ ! -f "$SPEC" ]; then
-        echo "failed to find kconfig.spec"
+        echo "failed to find kconfig-language.rst"
         echo "cannot provide documentation"
         echo "try to reinstall kconfig-language-server"
         exit 1
