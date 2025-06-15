@@ -6,6 +6,20 @@ Currently only supports highlighting.
 Will use kconfig documentation if available in current `rootPath` else will
 resort to documentation in kconfig.spec.
 
+## Configuration
+
+### Neovim
+
+```lua
+vim.lsp.config.kconfig = {
+    root_markers = { '.git' },
+    cmd = { 'kconfig-language-server' },
+    filetypes = { 'kconfig' },
+}
+
+vim.lsp.enable('kconfig')
+```
+
 ## Supported LSP Methods
 
 | Method | Supported | Comment |
