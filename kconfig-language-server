@@ -39,17 +39,26 @@ get_lines() {
 }
 
 get_symbol_help() {
-    # there can be multiple definitions of a symbol but only one help menu
-    # right?
+    local multiline=0
+    local files="$(rg -l "config $1$" "$2")"
 
-    local file="$(rg -l "config $1$" "$2")"
+    if [ "$(wc -l <<< "$files")" -gt 1 ]; then
+        local multiline=1
+    fi
 
-    [ -f "$file" ] || return 1
+    for file in $files; do
+        [ -f "$file" ] || continue
 
-    local config="$(awk "/config $1/ {flag=1} /^[a-z]/ && !/config $1/ {flag=0} flag" "$file")"
+        local config="$(awk "/config $1$/ {flag=1} /^[a-z]/ && !/config $1$/ {flag=0} flag" "$file")"
 
-    [[ "$config" =~ help ]] || return 1
-    awk "/help/ {flag=1; next} flag" <<< "$config" | sed 's/^[ \t]*//'
+        [[ "$config" =~ help ]] || continue
+
+        awk "/help/ {
+            flag=1;
+            if ($multiline) print \"\nFrom: $file\n\";
+            next
+        } flag" <<< "$config" | sed 's/^[ \t]*//g'
+    done
 }
 
 get_docs() {
