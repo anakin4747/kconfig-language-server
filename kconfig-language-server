@@ -76,8 +76,11 @@ get_docs() {
         config)
             get_lines "^Menu entries$" "^Menu attributes$" "$spec"
             ;;
-        bool|tristate|string|hex|int|prompt)
-            get_lines "^Menu attributes$" "^- default value" "$spec"
+        bool|tristate|string|hex|int)
+            get_lines "^Menu attributes$" "^- input prompt" "$spec"
+            ;;
+        prompt)
+            get_lines "^- input prompt:" "^- default value" "$spec"
             ;;
         default)
             get_lines "^- default value" "^- type definition" "$spec"
@@ -101,10 +104,13 @@ get_docs() {
             get_lines "^- numerical ranges" "^- help text" "$spec"
             ;;
         help|---help---)
-            get_lines "^- help text" "^- misc options" "$spec"
+            get_lines "^- help text" "^- module attribute" "$spec"
             ;;
-        option|defconfig_list|modules|allnoconfig_y)
-            get_lines "^- misc options" "^Menu dependencies" "$spec"
+        modules)
+            get_lines "^- module attribute" "^Menu dependencies" "$spec"
+            ;;
+        menuconfig)
+            get_lines "^menuconfig::" "^choices::" "$spec"
             ;;
         menu|endmenu)
             get_lines "^Menu structure" "^Kconfig syntax" "$spec"
@@ -114,6 +120,9 @@ get_docs() {
             ;;
         comment)
             get_lines "^comment::" "^menu::" "$spec"
+            ;;
+        if|endif)
+            get_lines "^if::" "^source::" "$spec"
             ;;
         "#")
             get_lines "Kconfig source file comment" "^Kconfig hints" "$spec"

@@ -31,12 +31,14 @@ Menu entries
 Most entries define a config option; all other entries help to organize
 them. A single configuration option is defined like this::
 
+```kconfig
   config MODVERSIONS
 	bool "Set version information on all module symbols"
 	depends on MODULES
 	help
 	  Usually, modules have to be recompiled whenever you switch to a new
 	  kernel.  ...
+```
 
 Every line starts with a key word and can be followed by multiple
 arguments.  "config" starts a new config entry. The following lines
@@ -59,12 +61,16 @@ applicable everywhere (see syntax).
   definition optionally accepts an input prompt, so these two examples
   are equivalent::
 
+```kconfig
 	bool "Networking support"
+```
 
   and::
 
+```kconfig
 	bool
 	prompt "Networking support"
+```
 
 - input prompt: "prompt" <prompt> ["if" <expr>]
 
@@ -125,14 +131,18 @@ applicable everywhere (see syntax).
   are applied to all other options within this menu entry (which also
   accept an "if" expression), so these two examples are equivalent::
 
+```kconfig
 	bool "foo" if BAR
 	default y if BAR
+```
 
   and::
 
+```kconfig
 	depends on BAR
 	bool "foo"
 	default y
+```
 
 - reverse dependencies: "select" <symbol> ["if" <expr>]
 
@@ -168,6 +178,7 @@ applicable everywhere (see syntax).
 
   Given the following example::
 
+```kconfig
     config FOO
 	tristate "foo"
 	imply BAZ
@@ -175,6 +186,7 @@ applicable everywhere (see syntax).
     config BAZ
 	tristate "baz"
 	depends on BAR
+```
 
   The following values are possible:
 
@@ -197,10 +209,12 @@ applicable everywhere (see syntax).
   Note: If the feature provided by BAZ is highly desirable for FOO,
   FOO should imply not only BAZ, but also its dependency BAR::
 
+```kconfig
     config FOO
 	tristate "foo"
 	imply BAR
 	imply BAZ
+```
 
   Note: If "imply" <symbol> is followed by "if" <expr>, the default of <symbol>
   will be the logical AND of the value of the current menu symbol and <expr>.
@@ -287,6 +301,7 @@ Menu structure
 The position of a menu entry in the tree is determined in two ways. First
 it can be specified explicitly::
 
+```kconfig
   menu "Network device support"
 	depends on NET
 
@@ -294,6 +309,7 @@ it can be specified explicitly::
 	...
 
   endmenu
+```
 
 All entries within the "menu" ... "endmenu" block become a submenu of
 "Network device support". All subentries inherit the dependencies from
@@ -309,6 +325,7 @@ must be true:
 - the child entry must become invisible, if the parent is set to 'n'
 - the child entry must only be visible, if the parent is visible::
 
+```kconfig
     config MODULES
 	bool "Enable loadable module support"
 
@@ -318,6 +335,7 @@ must be true:
 
     comment "module support disabled"
 	depends on !MODULES
+```
 
 MODVERSIONS directly depends on MODULES, this means it's only visible if
 MODULES is different from 'n'. The comment on the other hand is only
@@ -474,11 +492,13 @@ An example is the generic IOMAP functionality.
 
 We would in lib/Kconfig see::
 
+```kconfig
   # Generic IOMAP is used to ...
   config HAVE_GENERIC_IOMAP
 
   config GENERIC_IOMAP
 	depends on HAVE_GENERIC_IOMAP && FOO
+```
 
 And in lib/Makefile we would see::
 
@@ -486,10 +506,12 @@ And in lib/Makefile we would see::
 
 For each architecture using the generic IOMAP functionality we would see::
 
+```kconfig
   config X86
 	select ...
 	select HAVE_GENERIC_IOMAP
 	select ...
+```
 
 Note: we use the existing config option and avoid creating a new
 config variable to select HAVE_GENERIC_IOMAP.
@@ -507,24 +529,30 @@ There are several features that need compiler support. The recommended way
 to describe the dependency on the compiler feature is to use "depends on"
 followed by a test macro::
 
+```kconfig
   config STACKPROTECTOR
 	bool "Stack Protector buffer overflow detection"
 	depends on $(cc-option,-fstack-protector)
 	...
+```
 
 If you need to expose a compiler capability to makefiles and/or C source files,
 `CC_HAS_` is the recommended prefix for the config option::
 
+```kconfig
   config CC_HAS_FOO
 	def_bool $(success,$(srctree)/scripts/cc-check-foo.sh $(CC))
+```
 
 Build as module only
 ~~~~~~~~~~~~~~~~~~~~
 To restrict a component build to module-only, qualify its config symbol
 with "depends on m".  E.g.::
 
+```kconfig
   config FOO
 	depends on BAR && m
+```
 
 limits FOO to module (=m) or disabled (=n).
 
@@ -559,9 +587,11 @@ configures a kernel.
 Such a dependency can be relaxed by combining it with the compile-testing rule
 above, leading to:
 
+```kconfig
   config FOO
 	bool "Support for foo hardware"
 	depends on ARCH_FOO_VENDOR || COMPILE_TEST
+```
 
 Optional dependencies
 ~~~~~~~~~~~~~~~~~~~~~
@@ -573,9 +603,11 @@ when trying to use that loadable module from a built-in driver.
 The most common way to express this optional dependency in Kconfig logic
 uses the slightly counterintuitive::
 
+```kconfig
   config FOO
 	tristate "Support for foo hardware"
 	depends on BAR || !BAR
+```
 
 This means that there is either a dependency on BAR that disallows
 the combination of FOO=y with BAR=m, or BAR is completely disabled. The BAR
@@ -584,23 +616,27 @@ module must provide all the stubs for !BAR case.
 For a more formalized approach if there are multiple drivers that have
 the same dependency, a helper symbol can be used, like::
 
+```kconfig
   config FOO
 	tristate "Support for foo hardware"
 	depends on BAR_OPTIONAL
 
   config BAR_OPTIONAL
 	def_tristate BAR || !BAR
+```
 
 Much less favorable way to express optional dependency is IS_REACHABLE() within
 the module code, useful for example when the module BAR does not provide
 !BAR stubs::
 
+```c
 	foo_init()
 	{
 		if (IS_REACHABLE(CONFIG_BAR))
 			bar_register(&foo);
 		...
 	}
+```
 
 IS_REACHABLE() is generally discouraged, because the code will be silently
 discarded, when CONFIG_BAR=m and this code is built-in. This is not what users
