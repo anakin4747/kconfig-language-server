@@ -82,6 +82,10 @@ setup() {
     run get_cword 750 2 test/fixtures/Kconfig
     test "$status" -eq 0
     test "$output" = "endmenu"
+
+    run get_cword 5 2 test/fixtures/codebases/linux/block/Kconfig
+    test "$status" -eq 0
+    test "$output" = "menuconfig"
 }
 
 @test "get_cword gets keywords prefixed with spaces" {
