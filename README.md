@@ -1,10 +1,10 @@
 
 # Kconfig LSP
 
-Currently only supports highlighting.
+Currently only supports hover.
 
 Will use kconfig documentation if available in current `rootPath` else will
-resort to documentation in kconfig.spec.
+resort to documentation in kconfig-language.rst
 
 ## Configuration
 
@@ -24,16 +24,16 @@ vim.lsp.enable('kconfig')
 
 | Method | Supported | Comment |
 |--------|-----------|---------|
-|textDocument/hover|true|Working for most keywords|
-|textDocument/rename|false|Higher priority feature|
-|textDocument/references|false|Higher priority feature|
+|textDocument/hover|true||
 |textDocument/definition|false|Higher priority feature|
+|textDocument/completion|false|Higher priority feature|
+|textDocument/references|false|Higher priority feature|
+|textDocument/rename|false|Higher priority feature|
+|textDocument/diagnostic|false|Higher priority feature|
 |callHierarchy/incomingCalls|false|Higher priority feature|
 |callHierarchy/outgoingCalls|false|Higher priority feature|
 |textDocument/codeAction|false|Not a priority|
-|textDocument/completion|false|Not a priority|
 |textDocument/declaration|false|Not a priority|
-|textDocument/diagnostic|false|Not a priority|
 |textDocument/documentHighlight|false|Not a priority|
 |textDocument/documentSymbol|false|Not a priority|
 |textDocument/foldingRange|false|Not a priority|
