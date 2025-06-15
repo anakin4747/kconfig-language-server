@@ -10,7 +10,7 @@ dev-install:
 	install -d $(DESTDIR)$(PREFIX)/bin/
 	ln -sf $$PWD/kconfig-language-server $(DESTDIR)$(PREFIX)/bin/kconfig-language-server
 	install -d $(DESTDIR)$(PREFIX)/share/kconfig-language-server/runtime
-	install -m 0644 kconfig-language.rst $(DESTDIR)$(PREFIX)/share/kconfig-language-server/runtime/
+	ln -sf $$PWD/kconfig-language.rst $(DESTDIR)$(PREFIX)/share/kconfig-language-server/runtime/kconfig-language.rst
 
 .PHONY: install
 install:
