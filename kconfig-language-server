@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+REQUIRED_TOOLS=(jq awk sed rg)
+
+are_deps_met() {
+
+    MISSING_TOOLS=()
+
+    for tool in "${REQUIRED_TOOLS[@]}"; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            MISSING_TOOLS+=("$tool")
+        fi
+    done
+
+    if [ ${#MISSING_TOOLS[@]} -ne 0 ]; then
+        echo "kconfig-language-server is missing the following dependencies: ${MISSING_TOOLS[*]}"
+        return 1
+    fi
+}
+
 ROOTPATH=""
 SPEC=""
 
@@ -218,6 +236,8 @@ parse_headers() {
 }
 
 main() {
+
+    are_deps_met || exit 1
 
     SPEC=$(find /usr -name kconfig-language.rst 2> /dev/null)
 

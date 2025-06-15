@@ -6,6 +6,15 @@ Currently only supports hover.
 Will use kconfig documentation if available in current `rootPath` else will
 resort to documentation in kconfig-language.rst
 
+## Dependencies
+
+This application relys on several command line tools, make sure you have
+installed:
+- rg
+- jq
+- awk
+- sed
+
 ## Configuration
 
 ### Neovim
