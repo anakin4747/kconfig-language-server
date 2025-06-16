@@ -7,7 +7,7 @@ are_deps_met() {
     MISSING_TOOLS=()
 
     for tool in "${REQUIRED_TOOLS[@]}"; do
-        if ! command -v "$tool" >/dev/null 2>&1; then
+        if ! command -v "$tool" > /dev/null 2>&1; then
             MISSING_TOOLS+=("$tool")
         fi
     done
@@ -29,29 +29,6 @@ get_id() {
     echo "$id"
 }
 
-send_response() {
-    local response="$1"
-    local length=${#response}
-    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response"
-}
-
-handle_initialize() {
-    local id="$(get_id "$1")"
-    ROOTPATH="$(echo "$1" | jq -r .params.rootPath)"
-    send_response "$(cat <<EOF
-{
-  "jsonrpc": "2.0",
-  "id": $id,
-  "result": {
-    "capabilities": {
-      "hoverProvider": true
-    }
-  }
-}
-EOF
-)"
-}
-
 get_lines() {
     awk "/$1/ {flag=1} /$2/ {flag=0} flag" "$3"
 }
@@ -67,7 +44,11 @@ get_symbol_help() {
     for file in $files; do
         [ -f "$file" ] || continue
 
-        local config="$(awk "/config $1$/ {flag=1} /^[a-z]/ && !/config $1$/ {flag=0} flag" "$file")"
+        local config="$(awk "
+            /config $1$/ {flag=1}
+            /^[a-z]/ && !/config $1$/ {flag=0}
+            flag
+        " "$file")"
 
         [[ "$config" =~ help ]] || continue
 
@@ -201,6 +182,44 @@ get_cword() {
     echo ${line:start:end-start}
 }
 
+send_response() {
+    local response="$1"
+    local length=${#response}
+    printf "Content-Length: %d\r\n\r\n%s" "$length" "$response"
+}
+
+parse_headers() {
+    local content_length=0
+    while IFS= read -r line; do
+        [[ "$line" == $'\r' || -z "$line" ]] && break
+        if [[ "$line" =~ Content-Length:\ ([0-9]+) ]]; then
+            content_length=${BASH_REMATCH[1]}
+        fi
+    done
+    echo "$content_length"
+}
+
+# Handlers {{{
+
+handle_initialize() {
+    local id="$(get_id "$1")"
+    ROOTPATH="$(echo "$1" | jq -r .params.rootPath)"
+    send_response "$(cat <<EOF
+{
+  "jsonrpc": "2.0",
+  "id": $id,
+  "result": {
+    "capabilities": {
+      "hoverProvider": true,
+      "definitionProvider": true
+    }
+  }
+}
+EOF
+)"
+}
+
+
 handle_hover() {
     local id="$(get_id $1)"
     local line="$(echo "$1" | jq -r .params.position.line)"
@@ -224,16 +243,7 @@ EOF
 )"
 }
 
-parse_headers() {
-    local content_length=0
-    while IFS= read -r line; do
-        [[ "$line" == $'\r' || -z "$line" ]] && break
-        if [[ "$line" =~ Content-Length:\ ([0-9]+) ]]; then
-            content_length=${BASH_REMATCH[1]}
-        fi
-    done
-    echo "$content_length"
-}
+# }}}
 
 main() {
 
