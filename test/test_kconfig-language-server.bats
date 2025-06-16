@@ -112,3 +112,15 @@ also to your specific host controller driver."
     test "$status" -eq 0
     test "$output" = "ARCH_NO_SWAP"
 }
+
+@test "go to definition works for single Kconfig symbols" {
+    run handle_definition "$(cat test/fixtures/requests/single-definition.json)"
+    test "$status" -eq 0
+    test "$output" = "$(cat test/fixtures/responses/single-definition.json)"
+}
+
+@test "go to definition works for multiple Kconfig symbols" {
+    run handle_definition "$(cat test/fixtures/requests/multiple-definition.json)"
+    test "$status" -eq 0
+    test "$output" = "$(cat test/fixtures/responses/multiple-definition.json)"
+}

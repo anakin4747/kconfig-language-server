@@ -243,6 +243,24 @@ EOF
 )"
 }
 
+handle_definition() {
+    cat << EOF
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": [
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/powerpc/Kconfig",
+      "range": {
+        "start": { "line": 1036, "character": 8 },
+        "end": { "line": 1036, "character": 33 }
+      }
+    }
+  ]
+}
+EOF
+}
+
 # }}}
 
 main() {
@@ -276,6 +294,9 @@ main() {
                 ;;
             "textDocument/hover")
                 handle_hover "$body"
+                ;;
+            "textDocument/definition")
+                handle_definition "$body"
                 ;;
             "shutdown")
                 send_response "{\"jsonrpc\":\"2.0\",\"id\":$id,\"result\":null}"

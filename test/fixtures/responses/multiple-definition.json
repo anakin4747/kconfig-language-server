@@ -1,0 +1,305 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": [
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/sparc/Kconfig",
+      "range": {
+        "start": {
+          "line": 136,
+          "character": 8
+        },
+        "end": {
+          "line": 136,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/riscv/Kconfig",
+      "range": {
+        "start": {
+          "line": 297,
+          "character": 8
+        },
+        "end": {
+          "line": 297,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/mips/Kconfig",
+      "range": {
+        "start": {
+          "line": 3073,
+          "character": 8
+        },
+        "end": {
+          "line": 3073,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/arc/Kconfig",
+      "range": {
+        "start": {
+          "line": 70,
+          "character": 8
+        },
+        "end": {
+          "line": 70,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/openrisc/Kconfig",
+      "range": {
+        "start": {
+          "line": 51,
+          "character": 8
+        },
+        "end": {
+          "line": 51,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/arm64/Kconfig",
+      "range": {
+        "start": {
+          "line": 309,
+          "character": 8
+        },
+        "end": {
+          "line": 309,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/alpha/Kconfig",
+      "range": {
+        "start": {
+          "line": 51,
+          "character": 8
+        },
+        "end": {
+          "line": 51,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/xtensa/Kconfig",
+      "range": {
+        "start": {
+          "line": 94,
+          "character": 8
+        },
+        "end": {
+          "line": 94,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/m68k/Kconfig",
+      "range": {
+        "start": {
+          "line": 82,
+          "character": 8
+        },
+        "end": {
+          "line": 82,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/s390/Kconfig",
+      "range": {
+        "start": {
+          "line": 2,
+          "character": 8
+        },
+        "end": {
+          "line": 2,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/parisc/Kconfig",
+      "range": {
+        "start": {
+          "line": 102,
+          "character": 8
+        },
+        "end": {
+          "line": 102,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/x86/Kconfig",
+      "range": {
+        "start": {
+          "line": 352,
+          "character": 8
+        },
+        "end": {
+          "line": 352,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/loongarch/Kconfig",
+      "range": {
+        "start": {
+          "line": 723,
+          "character": 8
+        },
+        "end": {
+          "line": 723,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/arm/Kconfig",
+      "range": {
+        "start": {
+          "line": 319,
+          "character": 8
+        },
+        "end": {
+          "line": 319,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/microblaze/Kconfig",
+      "range": {
+        "start": {
+          "line": 93,
+          "character": 8
+        },
+        "end": {
+          "line": 93,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/powerpc/Kconfig",
+      "range": {
+        "start": {
+          "line": 30,
+          "character": 8
+        },
+        "end": {
+          "line": 30,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/csky/Kconfig",
+      "range": {
+        "start": {
+          "line": 161,
+          "character": 8
+        },
+        "end": {
+          "line": 161,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/sh/mm/Kconfig",
+      "range": {
+        "start": {
+          "line": 4,
+          "character": 8
+        },
+        "end": {
+          "line": 4,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/nios2/Kconfig",
+      "range": {
+        "start": {
+          "line": 69,
+          "character": 8
+        },
+        "end": {
+          "line": 69,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/hexagon/Kconfig",
+      "range": {
+        "start": {
+          "line": 56,
+          "character": 8
+        },
+        "end": {
+          "line": 56,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/um/Kconfig",
+      "range": {
+        "start": {
+          "line": 40,
+          "character": 8
+        },
+        "end": {
+          "line": 40,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/zephyr/kernel/Kconfig.vm",
+      "range": {
+        "start": {
+          "line": 103,
+          "character": 8
+        },
+        "end": {
+          "line": 103,
+          "character": 10
+        }
+      }
+    },
+    {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/zephyr/soc/microchip/sam/sama7g5/Kconfig.defconfig",
+      "range": {
+        "start": {
+          "line": 14,
+          "character": 8
+        },
+        "end": {
+          "line": 14,
+          "character": 10
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "method": "textDocument/definition",
+  "id": 2,
+  "jsonrpc": "2.0",
+  "params": {
+    "position": {
+      "character": 20,
+      "line": 288
+    },
+    "textDocument": {
+      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/drivers/gpu/drm/Kconfig"
+    }
+  }
+}
