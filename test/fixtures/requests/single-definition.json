@@ -2,7 +2,7 @@
   "params": {
     "position": {
       "character": 13,
-      "line": 13
+      "line": 12
     },
     "textDocument": {
       "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/kernel/power/Kconfig"

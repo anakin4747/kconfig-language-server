@@ -114,13 +114,13 @@ also to your specific host controller driver."
 }
 
 @test "go to definition works for single Kconfig symbols" {
-    run handle_definition "$(cat test/fixtures/requests/single-definition.json)"
+    run handle_definition "$(cat test/fixtures/requests/single-definition.json)" test/fixtures/codebases/linux
     test "$status" -eq 0
     test "$output" = "$(cat test/fixtures/responses/single-definition.json)"
 }
 
 @test "go to definition works for multiple Kconfig symbols" {
-    run handle_definition "$(cat test/fixtures/requests/multiple-definition.json)"
+    run handle_definition "$(cat test/fixtures/requests/multiple-definition.json)" test/fixtures/codebases/linux
     test "$status" -eq 0
     test "$output" = "$(cat test/fixtures/responses/multiple-definition.json)"
 }

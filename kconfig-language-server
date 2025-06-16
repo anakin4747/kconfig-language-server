@@ -244,16 +244,42 @@ EOF
 }
 
 handle_definition() {
+    local id="$(get_id "$1")"
+    local line="$(echo "$1" | jq -r .params.position.line)"
+    local character="$(echo "$1" | jq -r .params.position.character)"
+    local file="$(echo "$1" | jq -r .params.textDocument.uri | sed 's|file://||')"
+    local cword="$(get_cword "$((line + 1))" "$((character + 1))" "$file")"
+
+    if [ -d "$2" ]; then
+        ROOTPATH="$PWD/$2"
+    fi
+
+    local found="$(rg -n "config $cword$" "$ROOTPATH")"
+
+    if [ "$(wc -l <<< "$files")" -gt 1 ]; then
+        local multiline=1
+        return
+    fi
+
+    local uri="$(awk -F: '{print $1}' <<< "$found")"
+    local line_nr="$(awk -F: '{print $2}' <<< "$found")"
+
+    # TODO:
+    # local match_start=
+    # local match_end=
+    #
+    # menuconfig (and possibly other keywords) breaks the hardcoded 8 below
+
     cat << EOF
 {
-  "id": 1,
+  "id": $id,
   "jsonrpc": "2.0",
   "result": [
     {
-      "uri": "file:///home/kin/src/kconfig-language-server/test/fixtures/codebases/linux/arch/powerpc/Kconfig",
+      "uri": "file://$uri",
       "range": {
-        "start": { "line": 1036, "character": 8 },
-        "end": { "line": 1036, "character": 33 }
+        "start": { "line": $line_nr, "character": 8 },
+        "end": { "line": $line_nr, "character": $((${#cword} + 7)) }
       }
     }
   ]
