@@ -1,10 +1,34 @@
 
 # Kconfig LSP
 
-Currently only supports hover.
+A minimal language server for the Kconfig language used for build system
+configuration in many notable projects such as Linux, U-Boot, and Zephyr.
 
-Will use kconfig documentation if available in current `rootPath` else will
-resort to documentation in kconfig-language.rst
+The language server should generally work in all of these projects and is
+mainly intended for using in Kconfig files.
+
+Future support for Kconfig symbols in C, .config, defconfigs, and etc. is
+desired but not yet implemented.
+
+This project mainly provides documentation for most tokens in Kconfig files but
+hopes to support most LSP methods in the future when I have time to work on it.
+
+The documentation provided by the `hover` LSP method is provided by
+`Documentation/kbuild/kconfig-language.rst` if available otherwise is provided
+by the `kconfig-language.rst` that gets installed with this language server.
+The purpose of this is to try to rely on the most relevant documentation.
+
+An indication (at least in my Neovim config) to where the documentation came
+from is if the hover is colourful. The `kconfig-language.rst` document provided
+by this repo wraps all Kconfig snippets in markdown to identify it. The
+language server protocol uses markdown for the `hover` method. My editor picks
+up these code blocks and colours them. However, if the documentation was found
+in the repo, it will contain no markdown code blocks (since it is .rst) and my
+editor does not colour them.
+
+The `kconfig-language.rst` file is derived from the file of the same name in
+the Linux kernel source code so this code base is also made available under
+GPL-2.0 (see LICENSE).
 
 ## Dependencies
 
