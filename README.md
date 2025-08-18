@@ -38,6 +38,31 @@ installed:
 - jq
 - awk
 - sed
+- bats (optional, for testing)
+
+## Installation
+
+Being a single file bash script no building is required and installation is
+straight-forward. A `Makefile` is provided for easy installation.
+
+```sh
+sudo make install
+# or
+sudo make dev-install # for installing as a symlink
+# and
+sudo make uninstall # for uninstalling
+```
+
+## Testing
+
+This application is tested with `bats` test framework and ideally features
+should be added in the future following TDD practices.
+
+```sh
+make
+# or
+make test
+```
 
 ## Configuration
 
