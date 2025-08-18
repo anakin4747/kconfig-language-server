@@ -59,14 +59,14 @@ vim.lsp.enable('kconfig')
 |textDocument/typeDefinition|false|Not a priority|
 |typeHierarchy/subtypes|false|Not a priority|
 |typeHierarchy/supertypes|false|Not a priority|
-|window/logMessage|false|Note a priority|
-|window/showMessage|false|Note a priority|
-|window/showDocument|false|Note a priority|
-|window/showMessageRequest|false|Note a priority|
-|workspace/applyEdit|false|Note a priority|
-|workspace/configuration|false|Note a priority|
-|workspace/executeCommand|false|Note a priority|
-|workspace/inlayHint/refresh|false|Note a priority|
-|workspace/symbol|false|Note a priority|
-|workspace/workspaceFolders|false|Note a priority|
+|window/logMessage|false|Not a priority|
+|window/showMessage|false|Not a priority|
+|window/showDocument|false|Not a priority|
+|window/showMessageRequest|false|Not a priority|
+|workspace/applyEdit|false|Not a priority|
+|workspace/configuration|false|Not a priority|
+|workspace/executeCommand|false|Not a priority|
+|workspace/inlayHint/refresh|false|Not a priority|
+|workspace/symbol|false|Not a priority|
+|workspace/workspaceFolders|false|Not a priority|
 
