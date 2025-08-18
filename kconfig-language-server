@@ -293,7 +293,7 @@ main() {
 
     are_deps_met || exit 1
 
-    SPEC=$(find /usr -name kconfig-language.rst 2> /dev/null)
+    SPEC=$(find /usr -path "*share/kconfig-language-server/runtime/kconfig-language.rst" 2> /dev/null)
 
     if [ ! -f "$SPEC" ]; then
         echo "failed to find kconfig-language.rst"
