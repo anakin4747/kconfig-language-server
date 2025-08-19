@@ -30,6 +30,14 @@ The `kconfig-language.rst` file is derived from the file of the same name in
 the Linux kernel source code so this code base is also made available under
 GPL-2.0 (see LICENSE).
 
+## Demo
+
+<div align="center">
+
+[![Demo of kconfig-language-server](https://img.youtube.com/vi/N20begB_v9s/mqdefault.jpg)](https://www.youtube.com/watch?v=N20begB_v9s)
+
+</div>
+
 ## Dependencies
 
 This application relys on several command line tools, make sure you have
