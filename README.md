@@ -88,6 +88,19 @@ vim.lsp.config.kconfig = {
 vim.lsp.enable('kconfig')
 ```
 
+## Troubleshooting
+
+If the `kconfig-language-server` fails immediately, this may be due to missing
+dependencies or other issues. The language server may print an explanation on
+stdout. Running the language server by itself may print the error. If it just
+hangs and prints no output then it likely started fine. If it prints an error
+you can use that to see what caused the error. Its a very small application so
+reading it will likely be the fastest solution to your issue.
+
+```sh
+kconfig-language-server
+```
+
 ## Supported LSP Methods
 
 | Method | Supported | Comment |
