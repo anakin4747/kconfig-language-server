@@ -72,6 +72,8 @@ make
 make test
 ```
 
+Note that some tests may be failing for features I have yet to add.
+
 ## Configuration
 
 ### Neovim
