@@ -40,7 +40,7 @@ GPL-2.0 (see LICENSE).
 
 ## Dependencies
 
-This application relys on several command line tools, make sure you have
+This application relies on several command line tools, make sure you have
 installed:
 - rg
 - jq
