@@ -101,6 +101,12 @@ reading it will likely be the fastest solution to your issue.
 kconfig-language-server
 ```
 
+You can use `bash -x` to print every line as a sort of debug mode:
+
+```sh
+bash -x kconfig-language-server
+```
+
 ## Supported LSP Methods
 
 | Method | Supported | Comment |
