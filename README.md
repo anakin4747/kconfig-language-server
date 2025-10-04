@@ -2,7 +2,8 @@
 # Kconfig LSP
 
 A minimal language server for the Kconfig language used for build system
-configuration in many notable projects such as Linux, U-Boot, and Zephyr.
+configuration in many notable projects such as Linux, U-Boot, Zephyr and
+coreboot.
 
 The language server should generally work in all of these projects and is
 mainly intended for using in Kconfig files.
